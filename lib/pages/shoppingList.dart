@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping_list/classes/listItem.dart';
 import 'package:shopping_list/components/itemInput.dart';
 import 'package:shopping_list/components/postItList.dart';
 
@@ -8,6 +9,14 @@ class ShoppingList extends StatefulWidget {
 }
 
 class _ShoppingListState extends State<ShoppingList> {
+  
+  List<ListItem> items = [];
+  
+  void addNewItem(String name){
+    setState(() => items.add(ListItem(name, false)));
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +29,8 @@ class _ShoppingListState extends State<ShoppingList> {
           child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(width: 400, height: 700,child: PostItList()),
-            ItemInput((String val) => print("Val: $val")),
+            SizedBox(width: 400, height: 700,child: PostItList(items)),
+            ItemInput((String val) => addNewItem(val)),
           ],
         )));
   }
