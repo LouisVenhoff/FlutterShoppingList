@@ -5,7 +5,15 @@ import 'package:shopping_list/classes/listItem.dart';
 
 class GraphQLConnector{
   GraphQLClient getGraphQlClient() {
-    final HttpLink link = HttpLink("http://192.168.178.65:3000/graphql");
+    
+    final HttpLink httpLink = HttpLink("http://192.168.178.65:3000/graphql");
+
+    final WebSocketLink wsLink = WebSocketLink(
+      "ws://192.168.178.65:3000/graphql",
+      config: const SocketClientConfig(autoReconnect: true)
+      );
+
+    final Link link = Link.split((request) => request.isSubscription, wsLink, httpLink);
 
     return GraphQLClient(
       link: link,
@@ -77,5 +85,39 @@ class GraphQLConnector{
     else{
       return true;
     }
+  }
+
+  Future<void> applyNewItemSubscription(Function callback) async {
+
+    GraphQLClient client = getGraphQlClient();
+
+    final String subscription = '''
+      subscription{
+        itemAdded{
+          description
+        }
+      }
+    ''';
+
+    final SubscriptionOptions options = SubscriptionOptions(
+      document: gql(subscription)
+    );
+
+    final Stream<QueryResult> stream = client.subscribe(options);
+
+    stream.listen((result) {
+      
+      if(result.hasException){
+        print("There was a Stream Error!");
+        print("Exception");
+      }
+      else{
+        callback();
+      }
+      
+      print("New remote event!");
+      print(result);
+    });
+
   }
 }

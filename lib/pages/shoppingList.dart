@@ -23,6 +23,7 @@ class _ShoppingListState extends State<ShoppingList> {
     super.initState();
 
     updateList();
+    connector.applyNewItemSubscription(updateList);
   }
 
   void addNewItem(String name) async {
@@ -31,9 +32,6 @@ class _ShoppingListState extends State<ShoppingList> {
 
     if(!itemAdded){
       print("There was an error while adding item to db");
-    }
-    else{
-      updateList();
     }
     
   }
