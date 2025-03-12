@@ -16,17 +16,36 @@ class _ShoppingListState extends State<ShoppingList> {
   
   List<ListItem> items = [];
   
+  GraphQLConnector connector = GraphQLConnector();
+
+  @override
+  void initState() {
+    super.initState();
+
+    updateList();
+  }
 
   void addNewItem(String name) async {
-    //setState(() => items.add(ListItem(name, 1, false)));
-    GraphQLConnector connector = GraphQLConnector();
-   
-    List<ListItem> fetchedItems = await connector.allItems();
     
+    bool itemAdded = await connector.addItem(ListItem(name, 3,false));
 
-    setState(() {
-      items = fetchedItems;
-    });
+    if(!itemAdded){
+      print("There was an error while adding item to db");
+    }
+    else{
+      updateList();
+    }
+    
+  }
+
+  void updateList()async {
+     
+   
+      List<ListItem> fetchedItems = await connector.allItems();
+    
+      setState(() {
+        items = fetchedItems;
+      });
   }
 
   @override

@@ -47,4 +47,35 @@ class GraphQLConnector{
 
     return resultList;
   }
+
+  Future<bool> addItem(ListItem item) async {
+    
+    GraphQLClient client = getGraphQlClient();
+
+    String mutation = r'''
+      mutation($name: String!){
+        addItem(description: $name){
+          description
+        }
+      }
+    ''';
+
+    final MutationOptions options = MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'name': item.name
+      }
+    );
+
+    final result = await client.mutate(options);
+
+    if(result.hasException){
+      print("Fehler!");
+      print(result.exception);
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 }
