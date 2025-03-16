@@ -40,10 +40,11 @@ class _ShoppingListState extends State<ShoppingList> {
      
    
       List<ListItem> fetchedItems = await connector.allItems();
-    
+
       setState(() {
         items = fetchedItems;
       });
+
   }
 
   @override

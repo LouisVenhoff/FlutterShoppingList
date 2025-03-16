@@ -13,7 +13,7 @@ class PostItList extends StatefulWidget {
 
 class _PostItListState extends State<PostItList> {
   
-  List<ListItem> items = List.empty();
+  List<ListItem> items = [];
   
   @override
   void didUpdateWidget(covariant PostItList oldWidget){
@@ -26,7 +26,7 @@ class _PostItListState extends State<PostItList> {
   }
 
   List<PostIt> generatePostIts(){
-    return items.map((ListItem item) => PostIt(item.name)).toList();
+    return items.map((ListItem item) => PostIt(item.name, item.isChecked)).toList();
   }
   
   @override
@@ -36,7 +36,7 @@ class _PostItListState extends State<PostItList> {
     itemCount: items.length,
     reverse: true,
     itemBuilder:(context, index) {
-      return PostIt(items[index].name);
+      return PostIt(items[index].name, items[index].isChecked);
     });
   }
 }

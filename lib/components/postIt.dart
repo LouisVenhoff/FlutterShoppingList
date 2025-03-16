@@ -3,8 +3,9 @@ import 'dart:math';
 
 class PostIt extends StatefulWidget {
   String name;
+  bool isChecked;
 
-  PostIt(this.name, {super.key});
+  PostIt(this.name, this.isChecked, {super.key});
 
   @override
   State<StatefulWidget> createState() => _PostItState();
@@ -14,6 +15,21 @@ class _PostItState extends State<PostIt> {
   
   bool isChecked = false;
   
+  @override
+  void initState(){
+    super.initState();
+
+    isChecked = widget.isChecked;
+  }
+  
+  @override
+  void didUpdateWidget(covariant PostIt oldWidget){
+    super.didUpdateWidget(oldWidget);
+
+    setState(() {
+      isChecked = widget.isChecked;
+    });
+  }
   
   void toggleChecked(){
     setState((){
