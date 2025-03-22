@@ -87,6 +87,35 @@ class GraphQLConnector{
     }
   }
 
+  Future<bool> toggleItem(int id, bool value) async {
+    GraphQLClient client = getGraphQlClient();
+
+    String mutation = r'''
+      mutation($id: String! $value: Boolean!){
+        changeState(id: $id, value: $value){
+        description
+      }
+    }
+    ''';
+
+    final MutationOptions options = MutationOptions(
+      document: gql(mutation),
+      variables: {
+        'id': id.toString(),
+        'value': value,
+      }
+    );
+
+    final result = await client.mutate(options);
+
+    if(result.hasException){
+      throw new Exception(result.exception);
+    }
+    else{
+      return true;
+    }
+  }
+
   Future<void> applyNewItemSubscription(Function(int id, String description) callback) async {
 
     GraphQLClient client = getGraphQlClient();

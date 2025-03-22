@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:shopping_list/classes/graphQLConnector.dart';
+
 class PostIt extends StatefulWidget {
+  int id;
   String name;
   bool isChecked;
 
-  PostIt(this.name, this.isChecked, {super.key});
+  PostIt(this.id, this.name, this.isChecked, {super.key});
 
   @override
   State<StatefulWidget> createState() => _PostItState();
@@ -31,10 +34,16 @@ class _PostItState extends State<PostIt> {
     });
   }
   
-  void toggleChecked(){
+  void toggleChecked() async {
+    
+    GraphQLConnector connector  = GraphQLConnector();
+    
     setState((){
       isChecked = !isChecked;
     });
+
+    connector.toggleItem(widget.id, isChecked);
+
   }
 
 
@@ -52,6 +61,13 @@ class _PostItState extends State<PostIt> {
 
   TextStyle nameTextStyle(){
     return TextStyle(decoration: isChecked ? TextDecoration.lineThrough : null, color: Colors.black);
+  }
+
+  void updateCheckedState(bool state){
+    
+    setState(() {
+      isChecked = state;
+    });
   }
 
   @override

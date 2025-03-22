@@ -26,7 +26,7 @@ class _PostItListState extends State<PostItList> {
   }
 
   List<PostIt> generatePostIts(){
-    return items.map((ListItem item) => PostIt(item.name, item.isChecked)).toList();
+    return items.map((ListItem item) => PostIt(item.id, item.name, item.isChecked)).toList();
   }
   
   @override
@@ -36,7 +36,7 @@ class _PostItListState extends State<PostItList> {
     itemCount: items.length,
     reverse: true,
     itemBuilder:(context, index) {
-      return PostIt(items[index].name, items[index].isChecked);
+      return PostIt(items[index].id, items[index].name, items[index].isChecked);
     });
   }
 }
