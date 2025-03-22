@@ -6,10 +6,10 @@ import 'package:shopping_list/classes/listItem.dart';
 class GraphQLConnector{
   GraphQLClient getGraphQlClient() {
     
-    final HttpLink httpLink = HttpLink("http://192.168.178.65:3000/graphql");
+    final HttpLink httpLink = HttpLink("http://10.0.2.2:3000/graphql");
 
     final WebSocketLink wsLink = WebSocketLink(
-      "ws://192.168.178.65:3000/graphql",
+      "ws://10.0.2.2:3000/graphql",
       config: const SocketClientConfig(autoReconnect: true)
       );
 
@@ -87,13 +87,14 @@ class GraphQLConnector{
     }
   }
 
-  Future<void> applyNewItemSubscription(Function callback) async {
+  Future<void> applyNewItemSubscription(Function(int id, String description) callback) async {
 
     GraphQLClient client = getGraphQlClient();
 
     final String subscription = '''
       subscription{
         itemAdded{
+          id
           description
         }
       }
@@ -112,11 +113,9 @@ class GraphQLConnector{
         print("Exception");
       }
       else{
-        callback();
+        dynamic payload = result.data!["itemAdded"];
+        callback(int.parse(payload["id"]), payload["description"]);
       }
-      
-      print("New remote event!");
-      print(result);
     });
 
   }

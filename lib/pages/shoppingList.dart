@@ -23,7 +23,7 @@ class _ShoppingListState extends State<ShoppingList> {
     super.initState();
 
     updateList();
-    connector.applyNewItemSubscription(updateList);
+    connector.applyNewItemSubscription((int id, String description) {print(id); print(description);});
   }
 
   void addNewItem(String name) async {
