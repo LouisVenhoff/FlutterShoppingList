@@ -24,7 +24,7 @@ class _ShoppingListState extends State<ShoppingList> {
 
     updateList();
     connector.applyNewItemSubscription(addItemToList);
-    connector.applyItemChangedSubscription((int id, bool status) => print("Item $id changed! Status: $status"));
+    connector.applyItemChangedSubscription(changeItemState);
   }
 
   void addNewItem(String name) async {
@@ -52,6 +52,14 @@ class _ShoppingListState extends State<ShoppingList> {
     setState(() {
       items.add(ListItem(description, id, false));
     });
+  }
+
+  void changeItemState(int id, bool status){
+    for(int i = 0; i < items.length; i++){
+      if(items[i].id == id){
+        setState(() => items[i].isChecked = status);
+      }
+    }
   }
 
   @override
