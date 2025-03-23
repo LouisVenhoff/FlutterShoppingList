@@ -6,10 +6,10 @@ import 'package:shopping_list/classes/listItem.dart';
 class GraphQLConnector{
   GraphQLClient getGraphQlClient() {
     
-    final HttpLink httpLink = HttpLink("http://10.0.2.2:3000/graphql");
+    final HttpLink httpLink = HttpLink("http://192.168.178.65:3000/graphql");
 
     final WebSocketLink wsLink = WebSocketLink(
-      "ws://10.0.2.2:3000/graphql",
+      "ws://192.168.178.65:3000/graphql",
       config: const SocketClientConfig(autoReconnect: true)
       );
 

@@ -23,7 +23,7 @@ class _ShoppingListState extends State<ShoppingList> {
     super.initState();
 
     updateList();
-    connector.applyNewItemSubscription(addItemToList);
+    connector.applyNewItemSubscription((int id, String description) => updateList());
     connector.applyItemChangedSubscription(changeItemState);
   }
 
