@@ -24,6 +24,7 @@ class _ShoppingListState extends State<ShoppingList> {
 
     updateList();
     connector.applyNewItemSubscription(addItemToList);
+    connector.applyItemChangedSubscription((int id, bool status) => print("Item $id changed! Status: $status"));
   }
 
   void addNewItem(String name) async {

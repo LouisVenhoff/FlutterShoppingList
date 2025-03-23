@@ -148,4 +148,33 @@ class GraphQLConnector{
     });
 
   }
+
+  Future<void> applyItemChangedSubscription(Function(int id, bool value) callback)async {
+    GraphQLClient client = getGraphQlClient();
+
+    final String subscription = r'''
+      subscription{
+        stateChanged{
+        id
+        isChecked
+        }
+      }
+    ''';
+
+    final SubscriptionOptions options = SubscriptionOptions(
+      document: gql(subscription)
+    );
+
+    final Stream<QueryResult> stream = client.subscribe(options);
+
+    stream.listen((result) {
+      if(result.hasException){
+        print("There was an error in status subscription");
+        return;
+      }
+
+      dynamic payload = result.data!["stateChanged"];
+      callback(int.parse(payload["id"]), payload["isChecked"]);
+    });
+  }
 }
